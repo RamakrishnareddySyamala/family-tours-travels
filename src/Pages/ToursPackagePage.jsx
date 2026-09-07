@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,15 +12,25 @@ function TourPackagesPage() {
   const API_URL = 'http://localhost:8082/api/tour-packages';
 
   // ==========================================
+  // AUTH HEADERS
+  // ==========================================
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
+
+  // ==========================================
   // TOUR PACKAGES
   // ==========================================
 
   const [packages, setPackages] = useState([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState('');
-
   const [saving, setSaving] = useState(false);
 
   // ==========================================
@@ -27,7 +38,6 @@ function TourPackagesPage() {
   // ==========================================
 
   const [showModal, setShowModal] = useState(false);
-
   const [editingPackage, setEditingPackage] = useState(null);
 
   // ==========================================
@@ -56,7 +66,10 @@ function TourPackagesPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch tour packages');
@@ -108,9 +121,7 @@ function TourPackagesPage() {
 
   const handleAddPackage = () => {
     setEditingPackage(null);
-
     resetForm();
-
     setShowModal(true);
   };
 
@@ -178,11 +189,7 @@ function TourPackagesPage() {
           `${API_URL}/${editingPackage.id}`,
           {
             method: 'PUT',
-
-            headers: {
-              'Content-Type': 'application/json',
-            },
-
+            headers: getAuthHeaders(),
             body: JSON.stringify(packageData),
           }
         );
@@ -195,11 +202,7 @@ function TourPackagesPage() {
       else {
         response = await fetch(API_URL, {
           method: 'POST',
-
-          headers: {
-            'Content-Type': 'application/json',
-          },
-
+          headers: getAuthHeaders(),
           body: JSON.stringify(packageData),
         });
       }
@@ -213,7 +216,6 @@ function TourPackagesPage() {
       }
 
       // Refresh from backend
-
       await fetchPackages();
 
       closeModal();
@@ -250,14 +252,13 @@ function TourPackagesPage() {
         `${API_URL}/${tourPackage.id}`,
         {
           method: 'DELETE',
+          headers: getAuthHeaders(),
         }
       );
 
       if (!response.ok) {
         throw new Error('Failed to delete tour package');
       }
-
-      // Refresh from backend
 
       await fetchPackages();
     } catch (error) {
@@ -284,6 +285,7 @@ function TourPackagesPage() {
         )}`,
         {
           method: 'PUT',
+          headers: getAuthHeaders(),
         }
       );
 
@@ -308,9 +310,7 @@ function TourPackagesPage() {
 
   const closeModal = () => {
     setShowModal(false);
-
     setEditingPackage(null);
-
     resetForm();
   };
 
@@ -363,8 +363,6 @@ function TourPackagesPage() {
 
       <aside className="hidden md:flex w-64 bg-slate-950 text-white flex-col">
 
-        {/* Logo */}
-
         <div className="px-6 py-6 border-b border-slate-800">
 
           <h1 className="text-xl font-bold">
@@ -377,11 +375,7 @@ function TourPackagesPage() {
 
         </div>
 
-        {/* Navigation */}
-
         <nav className="flex-1 px-4 py-6 space-y-2">
-
-          {/* Dashboard */}
 
           <button
             onClick={() => navigate('/admin')}
@@ -390,8 +384,6 @@ function TourPackagesPage() {
             <span>📊</span>
             <span>Dashboard</span>
           </button>
-
-          {/* Bookings */}
 
           <button
             onClick={() =>
@@ -403,8 +395,6 @@ function TourPackagesPage() {
             <span>Bookings</span>
           </button>
 
-          {/* Tour Packages - ACTIVE */}
-
           <button
             onClick={() =>
               navigate('/admin/tour-packages')
@@ -414,8 +404,6 @@ function TourPackagesPage() {
             <span>🧳</span>
             <span>Tour Packages</span>
           </button>
-
-          {/* Vehicles */}
 
           <button
             onClick={() =>
@@ -427,8 +415,6 @@ function TourPackagesPage() {
             <span>Vehicles</span>
           </button>
 
-          {/* Customers */}
-
           <button
             onClick={() =>
               navigate('/admin/customers')
@@ -438,8 +424,6 @@ function TourPackagesPage() {
             <span>👥</span>
             <span>Customers</span>
           </button>
-
-          {/* Reviews */}
 
           <button
             onClick={() =>
@@ -453,11 +437,10 @@ function TourPackagesPage() {
 
         </nav>
 
-        {/* Bottom Navigation */}
-
         <div className="px-4 py-5 border-t border-slate-800">
 
           <button
+            onClick={() => navigate('/admin/settings')}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
           >
             <span>⚙️</span>
@@ -465,6 +448,7 @@ function TourPackagesPage() {
           </button>
 
           <button
+            onClick={() => navigate('/admin/logout')}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-left mt-2"
           >
             <span>🚪</span>
@@ -501,8 +485,6 @@ function TourPackagesPage() {
 
             </div>
 
-            {/* ADD PACKAGE */}
-
             <button
               onClick={handleAddPackage}
               className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition"
@@ -520,8 +502,6 @@ function TourPackagesPage() {
         ========================================== */}
 
         <div className="p-6 md:p-8">
-
-          {/* BACK TO DASHBOARD */}
 
           <button
             onClick={() => navigate('/admin')}
@@ -642,8 +622,6 @@ function TourPackagesPage() {
 
           <div className="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
 
-            {/* Table Header */}
-
             <div className="px-6 py-5 border-b border-slate-200">
 
               <h3 className="text-lg font-bold text-slate-900">
@@ -655,8 +633,6 @@ function TourPackagesPage() {
               </p>
 
             </div>
-
-            {/* Table */}
 
             <div className="overflow-x-auto">
 
@@ -744,8 +720,6 @@ function TourPackagesPage() {
                         className="hover:bg-slate-50 transition"
                       >
 
-                        {/* Package */}
-
                         <td className="px-6 py-5">
 
                           <p className="text-sm font-semibold text-slate-800">
@@ -759,15 +733,11 @@ function TourPackagesPage() {
 
                         </td>
 
-                        {/* Destination */}
-
                         <td className="px-6 py-5">
 
                           <div className="flex items-center gap-2">
 
-                            <span>
-                              📍
-                            </span>
+                            <span>📍</span>
 
                             <span className="text-sm text-slate-700">
                               {tourPackage.destination}
@@ -777,8 +747,6 @@ function TourPackagesPage() {
 
                         </td>
 
-                        {/* Duration */}
-
                         <td className="px-6 py-5">
 
                           <span className="text-sm text-slate-700">
@@ -787,8 +755,6 @@ function TourPackagesPage() {
 
                         </td>
 
-                        {/* Price */}
-
                         <td className="px-6 py-5">
 
                           <span className="text-sm font-bold text-slate-800">
@@ -796,8 +762,6 @@ function TourPackagesPage() {
                           </span>
 
                         </td>
-
-                        {/* Status */}
 
                         <td className="px-6 py-5">
 
@@ -829,13 +793,9 @@ function TourPackagesPage() {
 
                         </td>
 
-                        {/* Actions */}
-
                         <td className="px-6 py-5">
 
                           <div className="flex items-center gap-2">
-
-                            {/* Edit */}
 
                             <button
                               onClick={() =>
@@ -847,8 +807,6 @@ function TourPackagesPage() {
                             >
                               Edit
                             </button>
-
-                            {/* Delete */}
 
                             <button
                               onClick={() =>
@@ -891,18 +849,12 @@ function TourPackagesPage() {
 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
 
-          {/* Overlay */}
-
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={closeModal}
           />
 
-          {/* Modal */}
-
           <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
-
-            {/* Modal Header */}
 
             <div className="px-6 py-5 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white z-10">
 
@@ -929,16 +881,12 @@ function TourPackagesPage() {
 
             </div>
 
-            {/* Form */}
-
             <form
               onSubmit={handleSubmit}
               className="p-6"
             >
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-                {/* Package Name */}
 
                 <div className="sm:col-span-2">
 
@@ -957,8 +905,6 @@ function TourPackagesPage() {
 
                 </div>
 
-                {/* Destination */}
-
                 <div>
 
                   <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -976,8 +922,6 @@ function TourPackagesPage() {
 
                 </div>
 
-                {/* Duration */}
-
                 <div>
 
                   <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -994,8 +938,6 @@ function TourPackagesPage() {
                   />
 
                 </div>
-
-                {/* Price */}
 
                 <div>
 
@@ -1023,8 +965,6 @@ function TourPackagesPage() {
 
                 </div>
 
-                {/* Status */}
-
                 <div>
 
                   <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -1050,8 +990,6 @@ function TourPackagesPage() {
 
                 </div>
 
-                {/* Description */}
-
                 <div className="sm:col-span-2">
 
                   <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -1070,8 +1008,6 @@ function TourPackagesPage() {
                 </div>
 
               </div>
-
-              {/* Buttons */}
 
               <div className="flex flex-col sm:flex-row gap-3 mt-6">
 

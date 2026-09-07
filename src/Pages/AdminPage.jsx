@@ -2,10 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function AdminPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // ==========================================
+  // AUTH HEADERS
+  // ==========================================
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
 
   // Booking modal
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -30,7 +43,10 @@ function AdminPage() {
       setError('');
 
       const response = await fetch(
-        'http://localhost:8082/api/bookings'
+        'http://localhost:8082/api/bookings',
+        {
+          headers: getAuthHeaders(),
+        }
       );
 
       if (!response.ok) {
@@ -53,9 +69,11 @@ function AdminPage() {
   // ==========================================
   const handleViewBooking = async (booking) => {
     try {
-      // Fetch latest version of the selected booking
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${booking.id}`
+        `http://localhost:8082/api/bookings/${booking.id}`,
+        {
+          headers: getAuthHeaders(),
+        }
       );
 
       if (!response.ok) {
@@ -69,7 +87,7 @@ function AdminPage() {
     } catch (err) {
       console.error('Error fetching booking details:', err);
 
-      // Fallback to the booking already available
+      // Fallback to existing booking data
       setSelectedBooking(booking);
       setShowBookingModal(true);
     }
@@ -98,6 +116,7 @@ function AdminPage() {
         )}`,
         {
           method: 'PUT',
+          headers: getAuthHeaders(),
         }
       );
 
@@ -145,6 +164,7 @@ function AdminPage() {
         `http://localhost:8082/api/bookings/${selectedBooking.id}`,
         {
           method: 'DELETE',
+          headers: getAuthHeaders(),
         }
       );
 
@@ -288,47 +308,44 @@ function AdminPage() {
           </button>
 
           <button
-  onClick={() => navigate('/admin/bookings')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-  <span>📅</span>
-  <span>Bookings</span>
-</button>
+            onClick={() => navigate('/admin/bookings')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>📅</span>
+            <span>Bookings</span>
+          </button>
 
           <button
-  onClick={() => navigate('/admin/tour-packages')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-  <span>🧳</span>
-  <span>Tour Packages</span>
-</button>
-
-          {/* Vehicles */}
-
-      <button
-  onClick={() => navigate('/admin/vehicles')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-  <span>🚗</span>
-  <span>Vehicles</span>
-</button>
-          
-
-         <button
-          onClick={() => navigate('/admin/customers')}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-          <span>👥</span>
-          <span>Customers</span>
-            </button>
+            onClick={() => navigate('/admin/tour-packages')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>🧳</span>
+            <span>Tour Packages</span>
+          </button>
 
           <button
-  onClick={() => navigate('/admin/reviews')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-  <span>⭐</span>
-  <span>Reviews</span>
-</button>
+            onClick={() => navigate('/admin/vehicles')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>🚗</span>
+            <span>Vehicles</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/admin/customers')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>👥</span>
+            <span>Customers</span>
+          </button>
+
+          <button
+            onClick={() => navigate('/admin/reviews')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>⭐</span>
+            <span>Reviews</span>
+          </button>
 
         </nav>
 
@@ -336,22 +353,20 @@ function AdminPage() {
         <div className="px-4 py-5 border-t border-slate-800">
 
           <button
-  onClick={() => navigate('/admin/settings')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
->
-  <span>⚙️</span>
-  <span>Settings</span>
-</button>
+            onClick={() => navigate('/admin/settings')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
+          >
+            <span>⚙️</span>
+            <span>Settings</span>
+          </button>
 
           <button
-  onClick={() => navigate('/admin/logout')}
-  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-left mt-2"
->
-  <span>🚪</span>
-  <span>Logout</span>
-</button>
-
-  
+            onClick={() => navigate('/admin/logout')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-400 hover:bg-red-500/10 transition text-left mt-2"
+          >
+            <span>🚪</span>
+            <span>Logout</span>
+          </button>
 
         </div>
 
@@ -362,9 +377,7 @@ function AdminPage() {
       ========================================== */}
       <main className="flex-1 min-w-0">
 
-        {/* ==========================================
-            TOP BAR
-        ========================================== */}
+        {/* TOP BAR */}
         <header className="bg-white border-b border-slate-200 px-6 md:px-8 py-5 flex items-center justify-between">
 
           <div>
@@ -397,9 +410,7 @@ function AdminPage() {
 
         </header>
 
-        {/* ==========================================
-            DASHBOARD CONTENT
-        ========================================== */}
+        {/* DASHBOARD CONTENT */}
         <div className="p-6 md:p-8">
 
           {/* Loading */}
@@ -429,9 +440,7 @@ function AdminPage() {
             </div>
           )}
 
-          {/* ==========================================
-              STATISTICS
-          ========================================== */}
+          {/* STATISTICS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
             {stats.map((stat) => (
@@ -467,9 +476,7 @@ function AdminPage() {
 
           </div>
 
-          {/* ==========================================
-              EXTRA STATUS SUMMARY
-          ========================================== */}
+          {/* EXTRA STATUS SUMMARY */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
 
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-5 py-4">
@@ -504,9 +511,7 @@ function AdminPage() {
 
           </div>
 
-          {/* ==========================================
-              RECENT BOOKINGS
-          ========================================== */}
+          {/* RECENT BOOKINGS */}
           <div
             id="recent-bookings"
             className="mt-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
@@ -924,7 +929,9 @@ function AdminPage() {
                   disabled={deletingBooking}
                   className="px-4 py-3 rounded-lg border border-red-300 text-red-600 font-semibold hover:bg-red-50 transition disabled:opacity-50"
                 >
-                  {deletingBooking ? 'Deleting...' : 'Delete'}
+                  {deletingBooking
+                    ? 'Deleting...'
+                    : 'Delete'}
                 </button>
 
               </div>

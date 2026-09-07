@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,6 +29,19 @@ function ReviewsPage() {
   const API_URL = 'http://localhost:8082/api/reviews';
 
   // ==========================================
+  // JWT HEADERS
+  // ==========================================
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
+
+  // ==========================================
   // FETCH REVIEWS
   // ==========================================
 
@@ -38,7 +50,9 @@ function ReviewsPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -106,6 +120,7 @@ function ReviewsPage() {
         `${API_URL}/${review.id}`,
         {
           method: 'DELETE',
+          headers: getAuthHeaders(),
         }
       );
 
@@ -152,6 +167,7 @@ function ReviewsPage() {
         )}`,
         {
           method: 'PUT',
+          headers: getAuthHeaders(),
         }
       );
 
@@ -745,7 +761,6 @@ function ReviewsPage() {
                     <option value="1">
                       ⭐ 1 Star
                     </option>
-
                   </select>
 
                 </div>

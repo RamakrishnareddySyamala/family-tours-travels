@@ -12,6 +12,19 @@ function SettingsPage() {
   const API_URL = 'http://localhost:8082/api/settings';
 
   // =====================================================
+  // AUTH HEADERS
+  // =====================================================
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
+
+  // =====================================================
   // STATE
   // =====================================================
 
@@ -50,7 +63,10 @@ function SettingsPage() {
       setError('');
       setSuccess('');
 
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL, {
+        method: 'GET',
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) {
         throw new Error(
@@ -71,26 +87,32 @@ function SettingsPage() {
         pincode: data.pincode || '',
         openingTime: data.openingTime || '',
         closingTime: data.closingTime || '',
+
         onlineBooking:
           data.onlineBooking !== undefined
             ? data.onlineBooking
             : true,
+
         whatsappBooking:
           data.whatsappBooking !== undefined
             ? data.whatsappBooking
             : true,
+
         callBooking:
           data.callBooking !== undefined
             ? data.callBooking
             : true,
+
         emailNotifications:
           data.emailNotifications !== undefined
             ? data.emailNotifications
             : true,
+
         bookingNotifications:
           data.bookingNotifications !== undefined
             ? data.bookingNotifications
             : true,
+
         reviewNotifications:
           data.reviewNotifications !== undefined
             ? data.reviewNotifications
@@ -161,9 +183,9 @@ function SettingsPage() {
 
       const response = await fetch(API_URL, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+
+        headers: getAuthHeaders(),
+
         body: JSON.stringify(settings),
       });
 
@@ -189,16 +211,22 @@ function SettingsPage() {
           updatedSettings.openingTime || '',
         closingTime:
           updatedSettings.closingTime || '',
+
         onlineBooking:
           updatedSettings.onlineBooking ?? true,
+
         whatsappBooking:
           updatedSettings.whatsappBooking ?? true,
+
         callBooking:
           updatedSettings.callBooking ?? true,
+
         emailNotifications:
           updatedSettings.emailNotifications ?? true,
+
         bookingNotifications:
           updatedSettings.bookingNotifications ?? true,
+
         reviewNotifications:
           updatedSettings.reviewNotifications ?? true,
       });
@@ -246,8 +274,6 @@ function SettingsPage() {
 
       <aside className="hidden md:flex w-64 bg-slate-950 text-white flex-col">
 
-        {/* Logo */}
-
         <div className="px-6 py-6 border-b border-slate-800">
 
           <h1 className="text-xl font-bold">
@@ -260,11 +286,7 @@ function SettingsPage() {
 
         </div>
 
-        {/* Navigation */}
-
         <nav className="flex-1 px-4 py-6 space-y-2">
-
-          {/* Dashboard */}
 
           <button
             onClick={() => navigate('/admin')}
@@ -274,8 +296,6 @@ function SettingsPage() {
             <span>Dashboard</span>
           </button>
 
-          {/* Bookings */}
-
           <button
             onClick={() => navigate('/admin/bookings')}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition text-left"
@@ -283,8 +303,6 @@ function SettingsPage() {
             <span>📅</span>
             <span>Bookings</span>
           </button>
-
-          {/* Tour Packages */}
 
           <button
             onClick={() =>
@@ -296,8 +314,6 @@ function SettingsPage() {
             <span>Tour Packages</span>
           </button>
 
-          {/* Vehicles */}
-
           <button
             onClick={() =>
               navigate('/admin/vehicles')
@@ -308,8 +324,6 @@ function SettingsPage() {
             <span>Vehicles</span>
           </button>
 
-          {/* Customers */}
-
           <button
             onClick={() =>
               navigate('/admin/customers')
@@ -319,8 +333,6 @@ function SettingsPage() {
             <span>👥</span>
             <span>Customers</span>
           </button>
-
-          {/* Reviews */}
 
           <button
             onClick={() =>
@@ -334,11 +346,7 @@ function SettingsPage() {
 
         </nav>
 
-        {/* Bottom Navigation */}
-
         <div className="px-4 py-5 border-t border-slate-800">
-
-          {/* Settings Active */}
 
           <button
             onClick={() =>
@@ -349,8 +357,6 @@ function SettingsPage() {
             <span>⚙️</span>
             <span>Settings</span>
           </button>
-
-          {/* Logout */}
 
           <button
             onClick={() => navigate('/admin')}
@@ -370,8 +376,6 @@ function SettingsPage() {
 
       <main className="flex-1 min-w-0">
 
-        {/* TOP BAR */}
-
         <header className="bg-white border-b border-slate-200 px-6 md:px-8 py-5">
 
           <h2 className="text-2xl font-bold text-slate-900">
@@ -384,11 +388,7 @@ function SettingsPage() {
 
         </header>
 
-        {/* CONTENT */}
-
         <div className="p-6 md:p-8 max-w-6xl">
-
-          {/* BACK */}
 
           <button
             onClick={() => navigate('/admin')}
@@ -490,8 +490,6 @@ function SettingsPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Company */}
-
                     <div className="md:col-span-2">
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -510,8 +508,6 @@ function SettingsPage() {
 
                     </div>
 
-                    {/* Phone */}
-
                     <div>
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -529,8 +525,6 @@ function SettingsPage() {
 
                     </div>
 
-                    {/* Email */}
-
                     <div>
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -547,8 +541,6 @@ function SettingsPage() {
                       />
 
                     </div>
-
-                    {/* WhatsApp */}
 
                     <div>
 
@@ -595,8 +587,6 @@ function SettingsPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Address */}
-
                     <div className="md:col-span-2">
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -613,8 +603,6 @@ function SettingsPage() {
                       />
 
                     </div>
-
-                    {/* City */}
 
                     <div>
 
@@ -633,8 +621,6 @@ function SettingsPage() {
 
                     </div>
 
-                    {/* State */}
-
                     <div>
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -651,8 +637,6 @@ function SettingsPage() {
                       />
 
                     </div>
-
-                    {/* Pincode */}
 
                     <div>
 
@@ -700,8 +684,6 @@ function SettingsPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    {/* Opening */}
-
                     <div>
 
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -717,8 +699,6 @@ function SettingsPage() {
                       />
 
                     </div>
-
-                    {/* Closing */}
 
                     <div>
 
@@ -762,8 +742,6 @@ function SettingsPage() {
 
                 <div className="p-6 space-y-4">
 
-                  {/* Online Booking */}
-
                   <ToggleRow
                     title="Online Booking"
                     description="Allow customers to submit booking requests through the website."
@@ -773,8 +751,6 @@ function SettingsPage() {
                     }
                   />
 
-                  {/* WhatsApp */}
-
                   <ToggleRow
                     title="WhatsApp Booking"
                     description="Allow customers to contact the business through WhatsApp."
@@ -783,8 +759,6 @@ function SettingsPage() {
                       handleToggle('whatsappBooking')
                     }
                   />
-
-                  {/* Call */}
 
                   <ToggleRow
                     title="Call Booking"
@@ -819,8 +793,6 @@ function SettingsPage() {
 
                 <div className="p-6 space-y-4">
 
-                  {/* Email */}
-
                   <ToggleRow
                     title="Email Notifications"
                     description="Receive important business notifications by email."
@@ -830,8 +802,6 @@ function SettingsPage() {
                     }
                   />
 
-                  {/* Booking */}
-
                   <ToggleRow
                     title="Booking Notifications"
                     description="Receive notifications when a new booking is submitted."
@@ -840,8 +810,6 @@ function SettingsPage() {
                       handleToggle('bookingNotifications')
                     }
                   />
-
-                  {/* Reviews */}
 
                   <ToggleRow
                     title="Review Notifications"

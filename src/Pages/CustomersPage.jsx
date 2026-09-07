@@ -1,8 +1,22 @@
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function CustomersPage() {
   const navigate = useNavigate();
+
+  // =========================================================
+  // AUTH HEADERS
+  // =========================================================
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+
+    return {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+  };
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +40,10 @@ function CustomersPage() {
       setError('');
 
       const response = await fetch(
-        'http://localhost:8082/api/bookings'
+        'http://localhost:8082/api/bookings',
+        {
+          headers: getAuthHeaders(),
+        }
       );
 
       if (!response.ok) {
@@ -62,7 +79,8 @@ function CustomersPage() {
       if (!customerMap.has(mobile)) {
         customerMap.set(mobile, {
           mobileNumber: mobile,
-          customerName: booking.customerName || 'Unknown Customer',
+          customerName:
+            booking.customerName || 'Unknown Customer',
           email: booking.email || '',
           bookings: [],
         });
@@ -73,10 +91,7 @@ function CustomersPage() {
       customer.bookings.push(booking);
 
       // Keep available customer information updated
-      if (
-        !customer.email &&
-        booking.email
-      ) {
+      if (!customer.email && booking.email) {
         customer.email = booking.email;
       }
 
@@ -307,7 +322,6 @@ function CustomersPage() {
 
       </header>
 
-
       {/* =====================================================
           MAIN
       ====================================================== */}
@@ -341,7 +355,6 @@ function CustomersPage() {
           </div>
 
         )}
-
 
         {/* ===================================================
             SUMMARY CARDS
@@ -394,7 +407,6 @@ function CustomersPage() {
 
           </div>
 
-
           {/* TOTAL BOOKINGS */}
 
           <div className="
@@ -433,7 +445,6 @@ function CustomersPage() {
 
           </div>
 
-
           {/* CONFIRMED */}
 
           <div className="
@@ -471,7 +482,6 @@ function CustomersPage() {
             </div>
 
           </div>
-
 
           {/* PENDING */}
 
@@ -512,7 +522,6 @@ function CustomersPage() {
           </div>
 
         </div>
-
 
         {/* ===================================================
             SEARCH
@@ -589,7 +598,6 @@ function CustomersPage() {
           </p>
 
         </div>
-
 
         {/* ===================================================
             CUSTOMER TABLE
@@ -726,7 +734,6 @@ function CustomersPage() {
 
                 </thead>
 
-
                 <tbody className="divide-y divide-slate-100">
 
                   {filteredCustomers.map(
@@ -751,7 +758,6 @@ function CustomersPage() {
 
                         </td>
 
-
                         {/* MOBILE */}
 
                         <td className="px-6 py-4">
@@ -764,7 +770,6 @@ function CustomersPage() {
                           </p>
 
                         </td>
-
 
                         {/* EMAIL */}
 
@@ -779,7 +784,6 @@ function CustomersPage() {
                           </p>
 
                         </td>
-
 
                         {/* TOTAL BOOKINGS */}
 
@@ -799,7 +803,6 @@ function CustomersPage() {
 
                         </td>
 
-
                         {/* CONFIRMED */}
 
                         <td className="px-6 py-4">
@@ -818,7 +821,6 @@ function CustomersPage() {
 
                         </td>
 
-
                         {/* PENDING */}
 
                         <td className="px-6 py-4">
@@ -836,7 +838,6 @@ function CustomersPage() {
                           </span>
 
                         </td>
-
 
                         {/* ACTION */}
 
@@ -880,7 +881,6 @@ function CustomersPage() {
         </div>
 
       </main>
-
 
       {/* =====================================================
           CUSTOMER DETAILS MODAL
@@ -962,7 +962,6 @@ function CustomersPage() {
 
               </div>
 
-
               {/* CUSTOMER INFORMATION */}
 
               <div className="p-6">
@@ -995,7 +994,6 @@ function CustomersPage() {
 
                   </div>
 
-
                   <div className="
                     bg-slate-50
                     rounded-xl
@@ -1016,7 +1014,6 @@ function CustomersPage() {
                     </p>
 
                   </div>
-
 
                   <div className="
                     bg-slate-50
@@ -1043,7 +1040,6 @@ function CustomersPage() {
                   </div>
 
                 </div>
-
 
                 {/* CUSTOMER STATS */}
 
@@ -1088,7 +1084,6 @@ function CustomersPage() {
 
                     </div>
 
-
                     <div className="
                       bg-green-50
                       rounded-xl
@@ -1109,7 +1104,6 @@ function CustomersPage() {
                       </p>
 
                     </div>
-
 
                     <div className="
                       bg-yellow-50
@@ -1135,7 +1129,6 @@ function CustomersPage() {
                   </div>
 
                 </div>
-
 
                 {/* BOOKING HISTORY */}
 
@@ -1304,7 +1297,6 @@ function CustomersPage() {
                 </div>
 
               </div>
-
 
               {/* FOOTER */}
 

@@ -21,11 +21,11 @@ function AdminLoginPage() {
     try {
 
       const response = await fetch(
-        `http://localhost:8082/api/auth/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
-        {
-          method: 'POST'
-        }
-      );
+  `https://family-tours-travels-backend-production.up.railway.app/api/auth/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+  {
+    method: 'POST'
+  }
+);
 
       if (!response.ok) {
         throw new Error('Invalid email or password');
