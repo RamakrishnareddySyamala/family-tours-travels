@@ -21,7 +21,7 @@ function VehiclesPage() {
   // API URL
   // ==========================================
 
-  const API_URL = 'http://localhost:8082/api/vehicles';
+  const API_URL = 'https://family-tours-travels-backend-production.up.railway.app/api/vehicles';
 
   // ==========================================
   // VEHICLES
