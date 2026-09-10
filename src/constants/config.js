@@ -3,6 +3,9 @@
  * All business placeholders are structured here for easy client customization.
  */
 
+export const API_URL =
+  "https://family-tours-travels-backend-production.up.railway.app";
+
 export const BUSINESS_CONFIG = {
   name: "Family Tours & Travels",
   tagline: "Your Journey, Our Responsibility.",

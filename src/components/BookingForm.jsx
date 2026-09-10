@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+
+import { API_URL } from "../constants/config";
+
 import {
   Send,
   CheckCircle2,
@@ -234,14 +237,14 @@ const BookingForm = () => {
     };
 
     try {
-      const response = await fetch(
-        'http://localhost:8082/api/bookings',
-        {
-          method: 'POST',
+  const response = await fetch(
+    `${API_URL}/api/bookings`,
+    {
+      method: 'POST',
 
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      headers: {
+        'Content-Type': 'application/json',
+      },
 
           body: JSON.stringify(
             bookingData
