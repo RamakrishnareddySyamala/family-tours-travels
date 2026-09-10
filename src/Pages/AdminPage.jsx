@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/config';
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ function AdminPage() {
       setError('');
 
       const response = await fetch(
-        'http://localhost:8082/api/bookings',
+        `${API_URL}/api/bookings`,
         {
           headers: getAuthHeaders(),
         }
@@ -70,7 +71,7 @@ function AdminPage() {
   const handleViewBooking = async (booking) => {
     try {
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${booking.id}`,
+        `${API_URL}/api/bookings/${booking.id}`,
         {
           headers: getAuthHeaders(),
         }
@@ -111,7 +112,8 @@ function AdminPage() {
       setUpdatingStatus(true);
 
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${selectedBooking.id}/status?status=${encodeURIComponent(
+       `${API_URL}/api/bookings/${selectedBooking.id}/status?status=${encodeURIComponent(
+  
           status
         )}`,
         {
@@ -161,7 +163,7 @@ function AdminPage() {
       setDeletingBooking(true);
 
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${selectedBooking.id}`,
+       `${API_URL}/api/bookings/${selectedBooking.id}`,
         {
           method: 'DELETE',
           headers: getAuthHeaders(),
