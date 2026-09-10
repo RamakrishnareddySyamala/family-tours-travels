@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/config';
 
 function BookingsPage() {
 
@@ -44,7 +45,7 @@ function BookingsPage() {
       setLoading(true);
 
       const response = await fetch(
-  'http://localhost:8082/api/bookings',
+  `${API_URL}/api/bookings`,
   {
     headers: getAuthHeaders(),
   }
@@ -170,7 +171,7 @@ function BookingsPage() {
   const handleViewBooking = async (booking) => {
     try {
       const response = await fetch(
-  `http://localhost:8082/api/bookings/${booking.id}`,
+  `${API_URL}/api/bookings/${booking.id}`,
   {
     headers: getAuthHeaders(),
   }
@@ -220,7 +221,7 @@ function BookingsPage() {
       setUpdatingStatus(true);
 
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${selectedBooking.id}/status?status=${status}`,
+        `${API_URL}/api/bookings/${selectedBooking.id}/status?status=${status}`,
         {
           
   method: 'PUT',
@@ -282,7 +283,7 @@ function BookingsPage() {
       setUpdatingStatus(true);
 
       const response = await fetch(
-        `http://localhost:8082/api/bookings/${selectedBooking.id}`,
+        `${API_URL}/api/bookings/${selectedBooking.id}`,
         {
           
   method: 'DELETE',
