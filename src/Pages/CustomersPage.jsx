@@ -1,6 +1,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/config';
 
 function CustomersPage() {
   const navigate = useNavigate();
@@ -39,8 +40,12 @@ function CustomersPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch(
-        'http://localhost:8082/api/bookings',
+        const response = await fetch(
+  `${API_URL}/api/bookings`,
+  {
+    headers: getAuthHeaders(),
+  }
+);
         {
           headers: getAuthHeaders(),
         }
