@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/config';
 
 function TourPackagesPage() {
   const navigate = useNavigate();
@@ -9,8 +10,7 @@ function TourPackagesPage() {
   // API URL
   // ==========================================
 
-  const API_URL = 'http://localhost:8082/api/tour-packages';
-
+  const TOUR_PACKAGES_API_URL = `${API_URL}/api/tour-packages`;
   // ==========================================
   // AUTH HEADERS
   // ==========================================
@@ -66,7 +66,7 @@ function TourPackagesPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch(API_URL, {
+      const response = await fetch(TOUR_PACKAGES_API_URL, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
@@ -186,7 +186,7 @@ function TourPackagesPage() {
 
       if (editingPackage) {
         response = await fetch(
-          `${API_URL}/${editingPackage.id}`,
+          `${TOUR_PACKAGES_API_URL}/${editingPackage.id}`,
           {
             method: 'PUT',
             headers: getAuthHeaders(),
@@ -200,7 +200,7 @@ function TourPackagesPage() {
       // ==========================================
 
       else {
-        response = await fetch(API_URL, {
+        response = await fetch(TOUR_PACKAGES_API_URL, {
           method: 'POST',
           headers: getAuthHeaders(),
           body: JSON.stringify(packageData),
@@ -249,7 +249,7 @@ function TourPackagesPage() {
       setError('');
 
       const response = await fetch(
-        `${API_URL}/${tourPackage.id}`,
+        `${TOUR_PACKAGES_API_URL}/${tourPackage.id}`,
         {
           method: 'DELETE',
           headers: getAuthHeaders(),
@@ -280,7 +280,7 @@ function TourPackagesPage() {
       setError('');
 
       const response = await fetch(
-        `${API_URL}/${tourPackage.id}/status?status=${encodeURIComponent(
+        `${TOUR_PACKAGES_API_URL}/${tourPackage.id}/status?status=${encodeURIComponent(
           newStatus
         )}`,
         {
