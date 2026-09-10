@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { API_URL } from '../constants/config';
 function SettingsPage() {
   const navigate = useNavigate();
 
@@ -9,7 +9,7 @@ function SettingsPage() {
   // API
   // =====================================================
 
-  const API_URL = 'http://localhost:8082/api/settings';
+  const SETTINGS_API_URL = `${API_URL}/api/settings`;
 
   // =====================================================
   // AUTH HEADERS
@@ -63,7 +63,7 @@ function SettingsPage() {
       setError('');
       setSuccess('');
 
-      const response = await fetch(API_URL, {
+      const response = await fetch(SETTINGS_API_URL, {
         method: 'GET',
         headers: getAuthHeaders(),
       });
@@ -181,7 +181,7 @@ function SettingsPage() {
       setError('');
       setSuccess('');
 
-      const response = await fetch(API_URL, {
+      const response = await fetch(SETTINGS_API_URL, {
         method: 'PUT',
 
         headers: getAuthHeaders(),
