@@ -46,10 +46,7 @@ function CustomersPage() {
     headers: getAuthHeaders(),
   }
 );
-        {
-          headers: getAuthHeaders(),
-        }
-      );
+        
 
       if (!response.ok) {
         throw new Error('Failed to fetch bookings');
