@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 import { API_URL } from "../constants/config";
@@ -11,6 +12,7 @@ import {
   MapPin,
   User,
   Phone,
+  Mail,
   Users,
   Car,
 } from 'lucide-react';
@@ -24,6 +26,7 @@ const BookingForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     mobileNumber: '',
+    email: '',
     pickupLocation: '',
     destination: '',
     travelDate: '',
@@ -145,6 +148,18 @@ const BookingForm = () => {
         'Enter a valid 10-digit mobile number';
     }
 
+    if (!formData.email.trim()) {
+      newErrors.email =
+        'Email Address is required';
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+        formData.email.trim()
+      )
+    ) {
+      newErrors.email =
+        'Enter a valid email address';
+    }
+
     if (!formData.pickupLocation.trim()) {
       newErrors.pickupLocation =
         'Pickup Location is required';
@@ -215,7 +230,8 @@ const BookingForm = () => {
       mobileNumber:
         formData.mobileNumber.trim(),
 
-      email: '',
+      email:
+        formData.email.trim(),
 
       tripType:
         formData.serviceType,
@@ -237,14 +253,14 @@ const BookingForm = () => {
     };
 
     try {
-  const response = await fetch(
-    `${API_URL}/api/bookings`,
-    {
-      method: 'POST',
+      const response = await fetch(
+        `${API_URL}/api/bookings`,
+        {
+          method: 'POST',
 
-      headers: {
-        'Content-Type': 'application/json',
-      },
+          headers: {
+            'Content-Type': 'application/json',
+          },
 
           body: JSON.stringify(
             bookingData
@@ -312,6 +328,7 @@ const BookingForm = () => {
 
 *Name:* ${formData.fullName}
 *Phone:* ${formData.mobileNumber}
+*Email:* ${formData.email}
 *Service:* ${formData.serviceType}
 *Pickup:* ${formData.pickupLocation}
 *Destination:* ${formData.destination}
@@ -336,6 +353,7 @@ ${
     setFormData({
       fullName: '',
       mobileNumber: '',
+      email: '',
       pickupLocation: '',
       destination: '',
       travelDate: '',
@@ -394,11 +412,7 @@ ${
               directly for your travel requirements.
             </p>
 
-            {/* CONTACT OPTIONS */}
-
             <div className="flex flex-col sm:flex-row justify-center gap-3 mt-7">
-
-              {/* WHATSAPP */}
 
               {whatsappBooking &&
                 whatsappNumber && (
@@ -412,8 +426,6 @@ ${
                     WhatsApp Us
                   </a>
                 )}
-
-              {/* CALL */}
 
               {callBooking &&
                 phoneNumber && (
@@ -449,9 +461,7 @@ ${
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
-          {/* =================================================
-              LEFT COLUMN
-          ================================================= */}
+          {/* LEFT COLUMN */}
 
           <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
 
@@ -468,8 +478,6 @@ ${
               receive a personalized quote from{' '}
               {companyName}.
             </p>
-
-            {/* FEATURE 1 */}
 
             <div className="space-y-4 pt-4 border-t border-navy-800">
 
@@ -494,8 +502,6 @@ ${
 
               </div>
 
-              {/* FEATURE 2 */}
-
               <div className="flex items-start gap-3">
 
                 <div className="w-8 h-8 rounded-lg bg-gold-500/20 text-gold-400 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -519,9 +525,7 @@ ${
 
             </div>
 
-            {/* =================================================
-                WHATSAPP
-            ================================================= */}
+            {/* WHATSAPP */}
 
             {whatsappBooking &&
               whatsappNumber && (
@@ -553,9 +557,7 @@ ${
                 </div>
               )}
 
-            {/* =================================================
-                CALL
-            ================================================= */}
+            {/* CALL */}
 
             {callBooking &&
               phoneNumber && (
@@ -580,6 +582,7 @@ ${
                     <span>
                       Call Us Now
                     </span>
+
                   </a>
 
                 </div>
@@ -587,17 +590,13 @@ ${
 
           </div>
 
-          {/* =================================================
-              RIGHT COLUMN
-          ================================================= */}
+          {/* RIGHT COLUMN */}
 
           <div className="lg:col-span-7 bg-white text-slate-900 rounded-3xl p-6 sm:p-10 shadow-2xl border border-slate-200">
 
             {submitted ? (
 
-              /* =================================================
-                  SUCCESS
-              ================================================= */
+              /* SUCCESS */
 
               <div className="text-center py-10 space-y-6">
 
@@ -651,11 +650,14 @@ ${
                     {formData.mobileNumber}
                   </p>
 
+                  <p>
+                    <strong>Email:</strong>{' '}
+                    {formData.email}
+                  </p>
+
                 </div>
 
                 <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-
-                  {/* WHATSAPP */}
 
                   {whatsappBooking &&
                     whatsappNumber && (
@@ -674,8 +676,6 @@ ${
                       </a>
                     )}
 
-                  {/* CALL */}
-
                   {callBooking &&
                     phoneNumber && (
                       <a
@@ -691,8 +691,6 @@ ${
                       </a>
                     )}
 
-                  {/* RESET */}
-
                   <button
                     onClick={resetForm}
                     type="button"
@@ -707,9 +705,7 @@ ${
 
             ) : (
 
-              /* =================================================
-                  FORM
-              ================================================= */
+              /* FORM */
 
               <form
                 onSubmit={handleSubmit}
@@ -821,6 +817,54 @@ ${
                     )}
 
                   </div>
+
+                </div>
+
+                {/* EMAIL */}
+
+                <div className="space-y-1.5">
+
+                  <label
+                    htmlFor="email"
+                    className="block text-xs font-bold text-slate-700"
+                  >
+                    Email Address{' '}
+                    <span className="text-red-500">
+                      *
+                    </span>
+                  </label>
+
+                  <div className="relative">
+
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="Enter your email address"
+                      autoComplete="email"
+                      className={`w-full pl-9 pr-3 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
+                        errors.email
+                          ? 'border-red-400 focus:ring-red-200'
+                          : 'border-slate-300 focus:border-navy-800 focus:ring-navy-100'
+                      }`}
+                    />
+
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+
+                  </div>
+
+                  {errors.email && (
+                    <p className="text-[11px] text-red-500 flex items-center gap-1">
+                      <AlertCircle className="w-3 h-3" />
+                      {errors.email}
+                    </p>
+                  )}
+
+                  <p className="text-[11px] text-slate-500">
+                    We'll send your booking updates to this email.
+                  </p>
 
                 </div>
 
