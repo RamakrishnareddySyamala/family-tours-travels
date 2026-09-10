@@ -115,7 +115,7 @@ const Vehicle = () => {
             {/* Spec Placeholders Box */}
             <div className="bg-navy-900 text-white rounded-2xl p-5 border border-navy-800 space-y-3">
               <h4 className="text-xs font-bold text-gold-400 uppercase tracking-wider border-b border-navy-800 pb-2">
-                Vehicle Specifications (Configurable)
+                Vehicle Specifications 
               </h4>
               <div className="grid grid-cols-2 gap-3 text-xs">
                 {VEHICLE_DETAILS.specsPlaceholder.map((spec, idx) => (

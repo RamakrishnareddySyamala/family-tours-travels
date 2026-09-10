@@ -14,8 +14,8 @@ export const BUSINESS_CONFIG = {
   serviceTypeNote: "Dedicated Car-with-Driver Services (Not a self-drive rental)",
   
   // Business Contact Placeholders (To be replaced by client)
-  phone: "916302784238",
-  whatsapp: "916302784238",
+  phone: "6302784238",
+  whatsapp: "6302784238",
   email: "chowtie88@gmail.com",
   location: "SERILINAGAMPALLY , HYDERABAD, INDIA",
   workingHours: "24/7 Enquiry Support",
@@ -105,10 +105,10 @@ export const VEHICLE_DETAILS = {
     { title: "Clean & Sanitized", desc: "Hygienic, well-maintained vehicle before every trip", icon: "Sparkles" },
   ],
   specsPlaceholder: [
-    { label: "Seating Capacity", value: "[SEATING_CAPACITY]" },
-    { label: "Luggage Capacity", value: "[LUGGAGE_SPACE]" },
-    { label: "Fuel/AC Type", value: "[AC_SPECIFICATION]" },
-    { label: "Vehicle Rate", value: "[PRICE_PER_KM]" },
+    { label: "Seating Capacity", value: "7 Seats" },
+    { label: "Luggage Capacity", value: "Large" },
+    { label: "Fuel/AC Type", value: "Petrol /Cng / Dual AC" },
+    { label: "Vehicle Rate", value: "30/km" },
   ]
 };
 
