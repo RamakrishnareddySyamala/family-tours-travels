@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-
-const API_URL = 'http://localhost:8082/api/settings';
-
+import { API_URL } from '../constants/config';
+const SETTINGS_API_URL = `${API_URL}/api/settings`;
 function useSettings() {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,7 +12,7 @@ function useSettings() {
         setLoading(true);
         setError('');
 
-        const response = await fetch(API_URL);
+        const response = await fetch(SETTINGS_API_URL);
 
         if (!response.ok) {
           throw new Error(
