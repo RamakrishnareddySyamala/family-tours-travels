@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../constants/config';
 
 function ReviewsPage() {
   const navigate = useNavigate();
@@ -26,8 +27,11 @@ function ReviewsPage() {
   // API URL
   // ==========================================
 
-  const API_URL = 'http://localhost:8082/api/reviews';
+  // ==========================================
+// API URL
+// ==========================================
 
+const REVIEWS_API_URL = `${API_URL}/api/reviews`;
   // ==========================================
   // JWT HEADERS
   // ==========================================
@@ -50,7 +54,7 @@ function ReviewsPage() {
       setLoading(true);
       setError('');
 
-      const response = await fetch(API_URL, {
+      const response = await fetch(REVIEWS_API_URL, {
         headers: getAuthHeaders(),
       });
 
@@ -117,7 +121,7 @@ function ReviewsPage() {
       setDeletingId(review.id);
 
       const response = await fetch(
-        `${API_URL}/${review.id}`,
+        `${REVIEWS_API_URL}/${review.id}`,
         {
           method: 'DELETE',
           headers: getAuthHeaders(),
@@ -162,7 +166,7 @@ function ReviewsPage() {
       setUpdatingId(review.id);
 
       const response = await fetch(
-        `${API_URL}/${review.id}/status?status=${encodeURIComponent(
+        `${REVIEWS_API_URL}/${review.id}/status?status=${encodeURIComponent(
           newStatus
         )}`,
         {
